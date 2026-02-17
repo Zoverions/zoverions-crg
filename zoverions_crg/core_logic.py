@@ -7,6 +7,7 @@ from "The Recursive Universe" (Zoverions Protocol, Feb 2026)
 import networkx as nx
 import numpy as np
 from scipy.stats import entropy
+import matplotlib.pyplot as plt
 from typing import List, Tuple, Literal
 
 def transition_matrix(G: nx.Graph) -> np.ndarray:
@@ -49,7 +50,8 @@ def coarse_grain(G: nx.Graph, target_nodes: int) -> nx.Graph:
     return G_coarse
 
 def causal_beta_flow(G_fine: nx.Graph,
-                     scale_factors: List[float] = None) -> Tuple[np.ndarray, np.ndarray]:
+                     scale_factors: List[float] = None,
+                     plot: bool = True) -> Tuple[np.ndarray, np.ndarray]:
     """
     Compute β_C(λ) across scales.
     λ ~ log10(number of nodes)  (length scale proxy)
@@ -75,6 +77,21 @@ def causal_beta_flow(G_fine: nx.Graph,
     d_ei = np.diff(ei_values)
     d_ln_lambda = np.diff(lambda_log)
     beta_values = d_ei / d_ln_lambda
+
+    if plot:
+        fig, ax = plt.subplots(figsize=(10, 6))
+        # Note: scale_factors[:-1] corresponds to the intervals between steps where beta is defined
+        # But here we are plotting against the log of node counts, or similar.
+        # The user provided snippet: ax.plot(np.log10([len(G_fine)/f for f in scale_factors[:-1]]), beta_values, ...
+        # Let's match the user snippet exactly.
+        ax.plot(np.log10([len(G_fine)/f for f in scale_factors[:-1]]), beta_values, 'o-', linewidth=3, color='#00ff9d')
+        ax.axhline(0, color='red', linestyle='--', alpha=0.6)
+        ax.set_xlabel('log₁₀(Scale λ)')
+        ax.set_ylabel('Causal Beta Function β_C(λ)')
+        ax.set_title('Causal Renormalization Flow — Resurgence Detected?')
+        plt.grid(True, alpha=0.3)
+        plt.show()
+
     return beta_values, ei_values[:-1]  # align lengths
 
 def classify_flow(beta_values: np.ndarray,
@@ -93,3 +110,11 @@ def classify_flow(beta_values: np.ndarray,
         if len(beta_values) > 2 and beta_values[-1] > threshold and np.any(beta_values[:-1] < 0):
             return "Class III: Resurgence (Astrophysical)"
         return "Class III: Causal Emergence"
+
+def network_assembly_proxy(G: nx.Graph) -> float:
+    """A_N proxy via von Neumann entropy of adjacency (operationalizes Lemma 1 fully)"""
+    if len(G) < 2: return 0.0
+    A = nx.to_numpy_array(G)
+    eigvals = np.linalg.eigvalsh(A + 1e-10)
+    probs = np.abs(eigvals) / np.sum(np.abs(eigvals))
+    return -np.sum(probs * np.log2(probs + 1e-10))  # spectral entropy ≈ A_N
