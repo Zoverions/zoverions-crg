@@ -51,7 +51,7 @@ elif beta < 0:
 
 If you use this code, please cite:
 
-> Zoverions (2026). *The Recursive Universe v2.0: Causal Renormalization and the Infinite Stack.* arXiv:2602.XXXXX.
+> Zoverions (2026). *The Recursive Universe v2.0: Causal Renormalization and the Infinite Stack.*
 
 ## License
 
