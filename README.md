@@ -1,54 +1,58 @@
-# zoverions-crg
+# zoverions-crg: The Causal Renormalization Group
 
-**Causal Renormalization Group for Cosmic Complexity**
-*The official computational implementation of "The Recursive Universe" (Zoverions Protocol, Feb 2026)*
+![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Version](https://img.shields.io/badge/version-2.0-green)
 
+**Quantifying the Resurgence of Causal Power at Astrophysical Scales.**
+
+`zoverions-crg` is the open-source implementation of the framework presented in *"The Recursive Universe v2.0"*. It provides tools to calculate Effective Information (EI) and the Causal Beta Function ($\beta_C$) across varying coarse-graining scales.
+
+## The Theory
+Standard cosmology assumes complexity peaks at the biological scale and decays into thermodynamic equilibrium.
+**We disagree.**
+
+The **Middle-Stack Hypothesis** predicts a **Resurgence** of causal power ($\beta_C > 0$) at astrophysical scales, driven by the network topology of the Cosmic Web.
+
+## Installation
 ```bash
-pip install git+https://github.com/zoverions/zoverions-crg.git
+pip install .
+
 ```
 
-**What it does**
-Takes any graph (neural net, city grid, galaxy cluster, scale-free network…) and computes:
-- **Effective Information** EI(λ) at any coarse-graining scale (operationalizes Lemma 1)
-- **Causal Beta Function** β_C(λ) = dEI/d ln λ
-- Automatic classification: Reductionist (β_C < 0), Emergent (β_C > 0), Resurgence (second positive regime)
-
-Exactly as defined in Sections II–IV of the paper.
-
-### Quick Start
+## Quick Start: Testing for Resurgence
 
 ```python
-from zoverions_crg.core_logic import causal_beta_flow, classify_flow
 import networkx as nx
+from zoverions_crg.core import causal_beta
 
-G = nx.scale_free_graph(500)          # your system
-scales = [1.0, 2.0, 5.0, 10.0]        # coarse-graining factors
+# 1. Generate a Micro-Scale Network (e.g., Random Geometric Graph)
+G_micro = nx.random_geometric_graph(1000, 0.125)
 
-beta_values, ei_values = causal_beta_flow(G, scales)
-classification = classify_flow(beta_values)
+# 2. Renormalize (Coarse-Grain) to Macro-Scale
+# (Simulated clustering logic)
+mapping = {node: node // 10 for node in G_micro.nodes()}
+G_macro = nx.quotient_graph(G_micro, lambda u, v: mapping[u] == mapping[v], relabel=True)
 
-print(f"System type: {classification}")   # "Class III: Causal Emergence (Resurgence)"
+# 3. Calculate Causal Beta Function
+lambda_ratio = 10  # Scale difference
+beta, ei_micro, ei_macro = causal_beta(G_micro, G_macro, lambda_ratio)
+
+print(f"Micro EI: {ei_micro:.3f} bits")
+print(f"Macro EI: {ei_macro:.3f} bits")
+print(f"Causal Beta: {beta:.3f}")
+
+if beta > 0:
+    print(">> EMERGENCE DETECTED (Class III)")
+elif beta < 0:
+    print(">> REDUCTIONIST DECAY (Class I)")
+
 ```
 
-### Key Features
+## Citation
 
-- Markov-chain proxy for EI(λ) using max-entropy interventions (matches Hoel et al. 2013)
-- Hierarchical coarse-graining via Louvain + block-model contraction
-- Full renormalization sweep → plot β_C(λ) exactly like Figure 1
-- Built-in DESI-style spin-chirality notebook (load your catalog, see 200 Mpc resurgence)
-- Zero dependencies beyond `networkx`, `numpy`, `scipy`
+If you use this code, please cite:
 
-### Citation
+> Zoverions (2026). *The Recursive Universe v2.0: Causal Renormalization and the Infinite Stack.* arXiv:2602.XXXXX.
 
-```bibtex
-@misc{zoverions2026,
-  title = {The Recursive Universe: A Renormalization Framework for Cosmic Complexity},
-  author = {Zoverions Protocol},
-  year = {2026},
-  howpublished = {\url{https://github.com/zoverions/zoverions-crg}},
-  note = {CRG package implements Sections II–IV}
-}
-```
+## License
 
-**Run the code. See the resurgence.**
-No screenshots. No philosophy. Just `β_C > 0` at astrophysical scales.
+MIT
