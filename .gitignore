@@ -3,3 +3,4 @@ __pycache__/
 *.egg-info/
 test_crg.py
 .pytest_cache/
+build/
