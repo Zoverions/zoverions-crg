@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "source_repository": "Zoverions/zoverions-crg",
+  "source_ref": "7d88ed477ec176234492ba69f80191aa9516f09e",
+  "proposed_destination": "Zoverions/generative-landscape-governance",
+  "destination_created": false,
+  "method": "source-side export review only",
+  "files": [
+    {
+      "path": "CONSTITUTION.md",
+      "bytes": 7063,
+      "sha256": "d4bdbcf816ac18c609f52e6292dd53cf595603a190c58313a4e714267571124d"
+    },
+    {
+      "path": "zoverions_crg/constitution.py",
+      "bytes": 3253,
+      "sha256": "bb53661bd697e704d540392dc86f21e54793cf1f931c4ea1e5e716207cd1ec10"
+    },
+    {
+      "path": "test_constitution.py",
+      "bytes": 2904,
+      "sha256": "c9afef9c822475c251739d8901688669a36a896a6a835fcd87c327af3cf889dd"
+    }
+  ],
+  "history_preserved": true,
+  "code_copied": false,
+  "source_removed": false,
+  "approval_required_for_new_repository": true
+}

@@ -1,5 +1,7 @@
 # zoverions-crg: The Causal Renormalization Group
 
+> **Status:** Exploratory numerical research. Governance material is being separated through a source-side export proposal, and neither cosmological resurgence nor constitutional correctness is established by this code. See [`PORTFOLIO_STATUS.md`](PORTFOLIO_STATUS.md).
+
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Version](https://img.shields.io/badge/version-2.0-green)
 
 **Quantifying the Resurgence of Causal Power at Astrophysical Scales.**
